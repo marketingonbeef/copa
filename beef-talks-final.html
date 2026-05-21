@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beef Talks — Onbeef</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #F60903;
+      --black: #000000;
+      --charcoal: #2A2A2A;
+      --white: #FFFFFF;
+    }
+
+    body {
+      background-color: var(--black);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      padding: 28px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo img {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    /* HERO */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 24px 80px;
+    }
+
+    /* VIDEO */
+    .video-wrap {
+      width: 100%;
+      max-width: 720px;
+      aspect-ratio: 16/9;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 56px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.7s ease forwards 0.1s;
+    }
+
+    .video-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* HEADLINE */
+    .headline-block {
+      text-align: center;
+      margin-bottom: 52px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.7s ease forwards 0.3s;
+    }
+
+    .headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(56px, 11vw, 100px);
+      line-height: 0.92;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+    }
+
+    .dot { color: var(--red); }
+
+    .subheadline {
+      margin-top: 20px;
+      font-size: clamp(13px, 1.8vw, 15px);
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .subheadline strong {
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    /* FORM AREA */
+    .form-area {
+      width: 100%;
+      max-width: 480px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.7s ease forwards 0.5s;
+    }
+
+    .form-label {
+      display: block;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 36px 24px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    footer p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.15);
+      letter-spacing: 0.06em;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+      header { padding: 20px 20px; }
+      .hero { padding: 0 20px 60px; }
+      .video-wrap { margin-bottom: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="https://raw.githubusercontent.com/marketingonbeef/copa/main/Group%20165.svg" alt="Onbeef" />
+    </div>
+  </header>
+
+  <main class="hero">
+
+    <div class="video-wrap">
+      <iframe
+        src="https://www.youtube.com/embed/QOd7sLQiF-8?rel=0&modestbranding=1"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <div class="headline-block">
+      <h1 class="headline">A bola parou<span class="dot">.</span></h1>
+      <p class="subheadline"><strong>3 de junho</strong> &nbsp;·&nbsp; Beef Talks &nbsp;·&nbsp; Ao vivo</p>
+    </div>
+
+    <div class="form-area">
+      <span class="form-label">Preencha e receba o link do grupo</span>
+      <script>!function(a,m,o,c,r,m){a[o+c]=a[o+c]||{setMeta:function(p){this.params=(this.params||[]).concat([p])}},a[o+r]=a[o+r]||function(f){a[o+r].f=(a[o+r].f||[]).concat([f])},a[o+r]({id:"1709872",hash:"6c7cb7afb7494488f3f07e723348b03b",locale:"pt"}),a[o+m]=a[o+m]||function(f,k){a[o+m].f=(a[o+m].f||[]).concat([[f,k]])}}(window,0,"amo_forms_","params","load","loaded");</script>
+      <script id="amoforms_script_1709872" async="async" charset="utf-8" src="https://forms.kommo.com/forms/assets/js/amoforms.js?1779381951"></script>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>© 2026 Onbeef · Sistema de delivery exclusivo para açougues</p>
+  </footer>
+
+</body>
+</html>
