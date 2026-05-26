@@ -1,186 +1,529 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Beef Talks — Onbeef</title>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --red: #F60903;
-      --black: #000000;
-      --charcoal: #2A2A2A;
+      --red-soft: rgba(246,9,3,0.18);
+      --red-glow: rgba(246,9,3,0.12);
+      --black: #060606;
+      --surface: rgba(255,255,255,0.035);
+      --surface-hover: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.07);
+      --border-red: rgba(246,9,3,0.25);
       --white: #FFFFFF;
+      --muted: rgba(255,255,255,0.45);
     }
 
+    html { scroll-behavior: smooth; }
+
     body {
-      background-color: var(--black);
+      background: var(--black);
       color: var(--white);
       font-family: 'Poppins', sans-serif;
-      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Noise */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.5;
     }
 
     /* HEADER */
     header {
-      padding: 28px 40px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 18px 48px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      background: rgba(6,6,6,0.7);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
     }
-
-    .logo img {
-      height: 40px;
-      width: auto;
-      display: block;
+    .logo img { height: 32px; width: auto; }
+    .header-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 15px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 10px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 20px rgba(246,9,3,0.25);
     }
+    .header-cta:hover { background: #d40802; box-shadow: 0 0 30px rgba(246,9,3,0.4); }
 
     /* HERO */
     .hero {
+      position: relative;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 24px 80px;
-    }
-
-    /* VIDEO */
-    .video-wrap {
-      width: 100%;
-      max-width: 720px;
-      aspect-ratio: 16/9;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 56px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.7s ease forwards 0.1s;
-    }
-
-    .video-wrap iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-
-    /* HEADLINE */
-    .headline-block {
+      justify-content: center;
+      padding: 120px 24px 100px;
       text-align: center;
-      margin-bottom: 52px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.7s ease forwards 0.3s;
+      overflow: hidden;
     }
 
-    .headline {
+    /* Deep background glow */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 20%, rgba(246,9,3,0.2) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(129,30,1,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(129,30,1,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Orb */
+    .hero-orb {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(246,9,3,0.14) 0%, rgba(246,9,3,0.06) 35%, transparent 65%);
+      border-radius: 50%;
+      filter: blur(40px);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-logo {
+      margin-bottom: 36px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.1s;
+      filter: drop-shadow(0 0 30px rgba(246,9,3,0.4));
+    }
+    .hero-logo img { height: 90px; width: auto; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(246,9,3,0.1);
+      border: 1px solid rgba(246,9,3,0.25);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.2s;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    .hero-title {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 900;
-      font-size: clamp(56px, 11vw, 100px);
+      font-size: clamp(56px, 10vw, 120px);
       line-height: 0.92;
       text-transform: uppercase;
-      letter-spacing: -0.01em;
-    }
-
-    .dot { color: var(--red); }
-
-    .subheadline {
-      margin-top: 20px;
-      font-size: clamp(13px, 1.8vw, 15px);
-      font-weight: 500;
-      color: rgba(255,255,255,0.4);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    .subheadline strong {
-      color: var(--red);
-      font-weight: 600;
-    }
-
-    /* CONTEXT */
-    .context-text {
-      text-align: center;
-      max-width: 440px;
-      margin-bottom: 48px;
+      letter-spacing: -0.02em;
+      max-width: 960px;
+      margin-bottom: 24px;
       opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.7s ease forwards 0.4s;
+      animation: fadeUp 0.7s ease forwards 0.3s;
+      text-shadow: 0 0 80px rgba(246,9,3,0.15);
+    }
+    .hero-title em { font-style: normal; color: var(--red); }
+
+    .hero-sub {
+      font-size: clamp(15px, 2vw, 17px);
+      color: var(--muted);
+      max-width: 460px;
+      line-height: 1.75;
+      margin-bottom: 44px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.45s;
     }
 
-    .context-text p {
-      font-size: 16px;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.65);
-    }
-
-    .event-details {
+    .event-badges {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 24px;
-      margin: 20px 0;
+      gap: 10px;
       flex-wrap: wrap;
-    }
-
-    .event-details span {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: 0.06em;
-      background: var(--charcoal);
-      padding: 8px 16px;
-      border-radius: 4px;
-    }
-
-    .context-text p + p {
-      margin-top: 0;
-      color: rgba(255,255,255,0.35);
-      font-size: 14px;
-    }
-
-    /* FORM AREA */
-    .form-area {
-      width: 100%;
-      max-width: 480px;
+      margin-bottom: 44px;
       opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.7s ease forwards 0.5s;
+      animation: fadeUp 0.7s ease forwards 0.55s;
+    }
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.09);
+      backdrop-filter: blur(16px);
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .badge svg { opacity: 0.6; flex-shrink: 0; }
+
+    .hero-cta {
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.65s;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 20px 52px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 0 50px rgba(246,9,3,0.35), 0 4px 20px rgba(0,0,0,0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      transition: left 0.5s ease;
+    }
+    .btn-primary:hover::before { left: 150%; }
+    .btn-primary:hover {
+      background: #d40802;
+      transform: translateY(-2px);
+      box-shadow: 0 0 60px rgba(246,9,3,0.5), 0 8px 30px rgba(0,0,0,0.4);
     }
 
-    .form-label {
-      display: block;
-      text-align: center;
+    /* VIDEO */
+    .video-section {
+      padding: 60px 24px 80px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .video-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: rgba(255,255,255,0.18);
       font-size: 12px;
-      color: rgba(255,255,255,0.3);
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      box-shadow: inset 0 0 60px rgba(246,9,3,0.04), 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .video-placeholder svg { opacity: 0.25; }
+
+    /* SECTION WRAP */
+    .section-wrap {
+      padding: 90px 24px;
+      position: relative;
+    }
+    .section-wrap.alt {
+      background: linear-gradient(180deg, rgba(246,9,3,0.03) 0%, transparent 100%);
+    }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 56px; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(36px, 5vw, 64px);
+      text-transform: uppercase;
+      line-height: 0.95;
+    }
+    .section-sub {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.75;
+      margin: 14px auto 0;
+    }
+
+    /* GLASS CARD */
+    .glass-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 20px 40px rgba(0,0,0,0.3);
+      transition: border-color 0.25s, background 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .glass-card:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-red);
+      transform: translateY(-3px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 24px 48px rgba(0,0,0,0.4), 0 0 30px rgba(246,9,3,0.08);
+    }
+
+    /* INTRO */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .intro-text .section-title { text-align: left; margin-bottom: 20px; }
+    .intro-text p { font-size: 15px; color: var(--muted); line-height: 1.8; }
+    .intro-features { display: flex; flex-direction: column; gap: 12px; }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 20px;
+    }
+    .feature-icon {
+      width: 38px; height: 38px;
+      background: rgba(246,9,3,0.1);
+      border: 1px solid rgba(246,9,3,0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 16px rgba(246,9,3,0.1);
+    }
+    .feature-icon svg { color: var(--red); }
+    .feature-text strong { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .feature-text span { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    /* STEPS */
+    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .step-card { padding: 36px 28px; text-align: left; }
+    .step-number {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 52px;
+      color: var(--red);
+      line-height: 1;
+      margin-bottom: 16px;
+      opacity: 0.4;
+    }
+    .step-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+    .step-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* NUMBERS */
+    .numbers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .number-card {
+      padding: 36px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .number-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .number-card:hover::after { opacity: 1; }
+    .number-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(36px, 4vw, 52px);
+      line-height: 1;
+      margin-bottom: 8px;
+      text-shadow: 0 0 40px rgba(246,9,3,0.2);
+    }
+    .number-value em { font-style: normal; color: var(--red); }
+    .number-label { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    /* PROMO */
+    .promo-card {
+      position: relative;
+      border-radius: 20px;
+      padding: 72px 64px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(246,9,3,0.1) 0%, rgba(129,30,1,0.07) 40%, rgba(6,6,6,0) 100%);
+      border: 1px solid rgba(246,9,3,0.2);
+      box-shadow: inset 0 0 80px rgba(246,9,3,0.05), 0 30px 60px rgba(0,0,0,0.5);
+    }
+    .promo-glow {
+      position: absolute;
+      top: -150px; right: -150px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(246,9,3,0.2) 0%, transparent 60%);
+      pointer-events: none;
+      filter: blur(20px);
+    }
+    .promo-glow-2 {
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(129,30,1,0.15) 0%, transparent 60%);
+      pointer-events: none;
+      filter: blur(30px);
+    }
+    .promo-content { position: relative; z-index: 1; }
+    .promo-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--red);
+      border-radius: 4px;
+      padding: 4px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       margin-bottom: 24px;
+      box-shadow: 0 0 20px rgba(246,9,3,0.4);
+    }
+    .promo-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(42px, 6vw, 76px);
+      text-transform: uppercase;
+      line-height: 0.92;
+      margin-bottom: 24px;
+      max-width: 700px;
+    }
+    .promo-title em { font-style: normal; color: var(--red); }
+    .promo-desc {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 560px;
+      margin-bottom: 36px;
+    }
+    .promo-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 44px; }
+    .pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(246,9,3,0.08);
+      border: 1px solid rgba(246,9,3,0.18);
+      border-radius: 100px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+    }
+    .pill-dot { width: 5px; height: 5px; background: var(--red); border-radius: 50%; flex-shrink: 0; }
+
+    /* FORM */
+    .form-inner { max-width: 580px; margin: 0 auto; text-align: center; }
+    .form-inner .section-title { margin-bottom: 12px; }
+    .form-inner .section-sub { margin: 0 auto 44px; max-width: 420px; }
+    .form-wrap {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 44px 40px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 0 60px rgba(246,9,3,0.03), 0 30px 60px rgba(0,0,0,0.4);
+    }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      margin: 0 24px;
     }
 
     /* FOOTER */
     footer {
-      padding: 36px 24px;
-      text-align: center;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-
-    footer p {
-      font-size: 12px;
-      color: rgba(255,255,255,0.15);
-      letter-spacing: 0.06em;
-    }
+    footer p { font-size: 12px; color: rgba(255,255,255,0.18); letter-spacing: 0.06em; }
+    footer img { height: 24px; opacity: 0.3; }
 
     /* ANIMATIONS */
     @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
     }
 
     /* MOBILE */
-    @media (max-width: 600px) {
-      header { padding: 20px 20px; }
-      .hero { padding: 0 20px 60px; }
-      .video-wrap { margin-bottom: 40px; }
+    @media (max-width: 900px) {
+      header { padding: 16px 20px; }
+      .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+      .intro-grid { grid-template-columns: 1fr; gap: 40px; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .promo-card { padding: 44px 28px; }
+    }
+    @media (max-width: 500px) {
+      .header-cta { display: none; }
+      .numbers-grid { grid-template-columns: 1fr 1fr; }
+      .form-wrap { padding: 32px 20px; }
     }
   </style>
 </head>
@@ -188,36 +531,226 @@
 
   <header>
     <div class="logo">
-      <img src="https://raw.githubusercontent.com/marketingonbeef/copa/main/Group%20165.svg" alt="Onbeef" />
+      <img src="https://raw.githubusercontent.com/marketingonbeef/copa/main/Group%20165.svg" alt="Onbeef"/>
     </div>
+    <a href="#formulario" class="header-cta">Garanta sua vaga</a>
   </header>
 
-  <main class="hero">
-
-    <div class="headline-block">
-      <h1 class="headline">A bola parou<span class="dot">.</span></h1>
-      <p class="subheadline"><strong>3 de junho</strong> &nbsp;·&nbsp; Beef Talks &nbsp;·&nbsp; Ao vivo</p>
-    </div>
-
-    <div class="context-text">
-      <p>Dia 3 a Onbeef vai fazer uma live com uma oferta que nunca foi feita antes.</p>
-      <div class="event-details">
-        <span>📅 3 de junho</span>
-        <span>🕗 20h</span>
-        <span>▶️ Google Meet</span>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-orb"></div>
+    <div class="hero-content">
+      <div class="hero-logo">
+        <img src="https://raw.githubusercontent.com/marketingonbeef/copa/main/Ativo%201.svg" alt="Beef Talks"/>
       </div>
-      <p>Preencha esse formulário para entrar no grupo e receber o link da live.</p>
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        Ao vivo · 3 de junho
+      </div>
+      <h1 class="hero-title">
+        Nenhum açougue vai<br/>ficar de fora <em>da copa.</em>
+      </h1>
+      <p class="hero-sub">
+        Algo que a Onbeef nunca fez antes. Uma oferta inédita, ao vivo, só para quem estiver presente.
+      </p>
+      <div class="event-badges">
+        <div class="badge">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          3 de junho
+        </div>
+        <div class="badge">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          20h
+        </div>
+        <div class="badge">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M15 10l4.553-2.069A1 1 0 0121 8.882v6.236a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+          </svg>
+          Google Meet
+        </div>
+      </div>
+      <div class="hero-cta">
+        <a href="#formulario" class="btn-primary">
+          Garanta sua vaga
+          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
     </div>
+  </div>
 
-    <div class="form-area">
-      <span class="form-label">Preencha e receba o link do grupo</span>
-      <script>!function(a,m,o,c,r,m){a[o+c]=a[o+c]||{setMeta:function(p){this.params=(this.params||[]).concat([p])}},a[o+r]=a[o+r]||function(f){a[o+r].f=(a[o+r].f||[]).concat([f])},a[o+r]({id:"1709988",hash:"3d0ab21e8751d5a832a48a23a4629005",locale:"pt"}),a[o+m]=a[o+m]||function(f,k){a[o+m].f=(a[o+m].f||[]).concat([[f,k]])}}(window,0,"amo_forms_","params","load","loaded");</script>
-      <script id="amoforms_script_1709988" async="async" charset="utf-8" src="https://forms.kommo.com/forms/assets/js/amoforms.js?1779387252"></script>
+  <!-- VIDEO -->
+  <div class="video-section">
+    <div class="video-placeholder">
+      <svg width="44" height="44" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path d="M15 10l4.553-2.069A1 1 0 0121 8.882v6.236a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+      </svg>
+      Vídeo em breve
     </div>
+  </div>
 
-  </main>
+  <div class="divider"></div>
+
+  <!-- ONBEEF -->
+  <div class="section-wrap">
+    <div class="section-inner">
+      <div class="intro-grid">
+        <div class="intro-text">
+          <p class="section-label">Sobre a Onbeef</p>
+          <h2 class="section-title">Feito pra quem vende carne.</h2>
+          <p>A Onbeef é um sistema de delivery feito exclusivamente para açougues, boutiques e casas de carne. Não é uma solução genérica adaptada. Foi construída do zero para o mercado da carne porque carne tem gramatura, corte e variação de peso. Nenhum sistema genérico resolve isso.</p>
+        </div>
+        <div class="intro-features">
+          <div class="glass-card feature-item">
+            <div class="feature-icon">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18M3 12h18M3 18h18"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <strong>Venda por gramatura</strong>
+              <span>4 modos: Pacote, Peso Livre, Peso Mínimo e Padrão Unitário</span>
+            </div>
+          </div>
+          <div class="glass-card feature-item">
+            <div class="feature-icon">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.9 12 19.79 19.79 0 011.88 3.45a2 2 0 012-2.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <strong>Suporte humano</strong>
+              <span>Sem bot. Segunda a sexta, das 8h às 18h</span>
+            </div>
+          </div>
+          <div class="glass-card feature-item">
+            <div class="feature-icon">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <strong>Atualização em 1 clique</strong>
+              <span>Preços via carga de balança. Sem retrabalho operacional</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- BEEF TALKS -->
+  <div class="section-wrap alt">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">O que é o Beef Talks</p>
+        <h2 class="section-title">Uma live. Uma oferta. Uma chance.</h2>
+        <p class="section-sub">No dia 3 de junho a Onbeef abre ao vivo uma oportunidade que nunca ofereceu antes.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="glass-card step-card">
+          <div class="step-number">01</div>
+          <div class="step-title">Entre no grupo</div>
+          <p class="step-desc">Preencha o formulário abaixo e receba o link do grupo com todas as informações antes da live.</p>
+        </div>
+        <div class="glass-card step-card">
+          <div class="step-number">02</div>
+          <div class="step-title">Participe ao vivo</div>
+          <p class="step-desc">No dia 3 de junho, às 20h, entre no Google Meet. A oferta é revelada ao vivo para quem estiver presente.</p>
+        </div>
+        <div class="glass-card step-card">
+          <div class="step-number">03</div>
+          <div class="step-title">Garanta sua posição</div>
+          <p class="step-desc">A oferta é limitada. Os primeiros a confirmarem na live garantem. Depois disso, encerra.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- NÚMEROS -->
+  <div class="section-wrap">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-label">Resultados reais</p>
+        <h2 class="section-title">O que os açougues já construíram.</h2>
+        <p class="section-sub">Números dos últimos 12 meses dos açougues que usam a Onbeef.</p>
+      </div>
+      <div class="numbers-grid">
+        <div class="glass-card number-card">
+          <div class="number-value"><em>R$</em> 147M</div>
+          <div class="number-label">faturamento gerado pelos lojistas</div>
+        </div>
+        <div class="glass-card number-card">
+          <div class="number-value"><em>+</em>500</div>
+          <div class="number-label">açougues usando o sistema</div>
+        </div>
+        <div class="glass-card number-card">
+          <div class="number-value">209K</div>
+          <div class="number-label">clientes atendidos</div>
+        </div>
+        <div class="glass-card number-card">
+          <div class="number-value"><em>R$</em> 241</div>
+          <div class="number-label">ticket médio por pedido</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PROMOÇÃO -->
+  <div class="section-wrap alt">
+    <div class="section-inner">
+      <div class="promo-card">
+        <div class="promo-glow"></div>
+        <div class="promo-glow-2"></div>
+        <div class="promo-content">
+          <div class="promo-tag">Oferta exclusiva</div>
+          <h2 class="promo-title">Algo que a Onbeef <em>nunca fez antes.</em></h2>
+          <p class="promo-desc">Na live do dia 3 de junho, a Onbeef vai abrir uma oferta inédita para açougues que ainda não usam o sistema. Uma chance real de entrar na copa com estrutura e sem desculpa pra ficar de fora.</p>
+          <div class="promo-pills">
+            <div class="pill"><div class="pill-dot"></div>Exclusivo para quem estiver na live</div>
+            <div class="pill"><div class="pill-dot"></div>Para os primeiros</div>
+            <div class="pill"><div class="pill-dot"></div>Só no dia 3 de junho</div>
+          </div>
+          <a href="#formulario" class="btn-primary">
+            Garanta sua vaga
+            <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FORMULÁRIO -->
+  <div class="section-wrap" id="formulario">
+    <div class="form-inner">
+      <p class="section-label">Inscrição</p>
+      <h2 class="section-title">Garanta sua vaga.</h2>
+      <p class="section-sub">Preencha o formulário e receba o link do grupo antes da live.</p>
+      <div class="form-wrap">
+        <script>!function(a,m,o,c,r,m){a[o+c]=a[o+c]||{setMeta:function(p){this.params=(this.params||[]).concat([p])}},a[o+r]=a[o+r]||function(f){a[o+r].f=(a[o+r].f||[]).concat([f])},a[o+r]({id:"1709988",hash:"3d0ab21e8751d5a832a48a23a4629005",locale:"pt"}),a[o+m]=a[o+m]||function(f,k){a[o+m].f=(a[o+m].f||[]).concat([[f,k]])}}(window,0,"amo_forms_","params","load","loaded");</script>
+        <script id="amoforms_script_1709988" async="async" charset="utf-8" src="https://forms.kommo.com/forms/assets/js/amoforms.js?1779387252"></script>
+      </div>
+    </div>
+  </div>
 
   <footer>
+    <img src="https://raw.githubusercontent.com/marketingonbeef/copa/main/Group%20165.svg" alt="Onbeef"/>
     <p>© 2026 Onbeef · Sistema de delivery exclusivo para açougues</p>
   </footer>
 
