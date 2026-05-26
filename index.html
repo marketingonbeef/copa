@@ -512,18 +512,59 @@
       50% { opacity: 0.35; }
     }
 
-    /* MOBILE */
+    /* TABLET */
     @media (max-width: 900px) {
-      header { padding: 16px 20px; }
       .numbers-grid { grid-template-columns: repeat(2, 1fr); }
       .intro-grid { grid-template-columns: 1fr; gap: 40px; }
       .steps-grid { grid-template-columns: 1fr; }
-      .promo-card { padding: 44px 28px; }
+      .promo-card { padding: 44px 32px; }
+      .section-wrap { padding: 70px 24px; }
     }
-    @media (max-width: 500px) {
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+      header { padding: 14px 20px; }
+      .header-cta { font-size: 13px; padding: 9px 18px; }
+      .hero { padding: 100px 20px 72px; min-height: auto; }
+      .hero-logo img { height: 60px; }
+      .hero-badge { font-size: 10px; padding: 5px 14px; margin-bottom: 20px; }
+      .hero-title { font-size: clamp(44px, 12vw, 64px); margin-bottom: 18px; }
+      .hero-sub { font-size: 14px; margin-bottom: 32px; }
+      .event-badges { gap: 8px; margin-bottom: 32px; }
+      .badge { font-size: 12px; padding: 8px 14px; gap: 6px; }
+      .btn-primary { font-size: 18px; padding: 16px 36px; width: 100%; justify-content: center; }
+      .video-section { padding: 40px 20px 56px; }
+      .section-wrap { padding: 56px 20px; }
+      .section-header { margin-bottom: 40px; }
+      .section-title { font-size: clamp(32px, 8vw, 48px); }
+      .section-sub { font-size: 14px; }
+      .intro-text .section-title { font-size: clamp(32px, 8vw, 48px); }
+      .intro-text p { font-size: 14px; }
+      .feature-item { padding: 16px; gap: 12px; }
+      .feature-icon { width: 34px; height: 34px; }
+      .step-card { padding: 28px 24px; }
+      .step-number { font-size: 40px; margin-bottom: 12px; }
+      .step-title { font-size: 20px; }
+      .numbers-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .number-card { padding: 24px 20px; }
+      .number-value { font-size: clamp(28px, 7vw, 40px); }
+      .number-label { font-size: 12px; }
+      .promo-card { padding: 36px 24px; border-radius: 14px; }
+      .promo-title { font-size: clamp(34px, 9vw, 52px); }
+      .promo-desc { font-size: 14px; }
+      .pill { font-size: 12px; padding: 7px 12px; }
+      .form-wrap { padding: 28px 18px; border-radius: 14px; }
+      .form-inner .section-sub { margin-bottom: 32px; }
+      .divider { margin: 0 16px; }
+      footer { flex-direction: column; gap: 12px; padding: 28px 20px; text-align: center; }
+    }
+
+    /* SMALL PHONES */
+    @media (max-width: 380px) {
       .header-cta { display: none; }
-      .numbers-grid { grid-template-columns: 1fr 1fr; }
-      .form-wrap { padding: 32px 20px; }
+      .hero-title { font-size: 40px; }
+      .numbers-grid { grid-template-columns: 1fr; }
+      .event-badges { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
